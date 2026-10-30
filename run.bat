@@ -39,8 +39,8 @@ if not exist "bin" (
 )
 
 :: Compile
-echo [2/3] Compiling Java classes in src/...
-"%JAVAC_CMD%" -d bin src\*.java
+echo [2/3] Compiling Java classes in src/... with MySQL Driver
+"%JAVAC_CMD%" -cp "lib\mysql-connector-j.jar;." -d bin src\*.java
 if %errorlevel% neq 0 (
     echo [ERROR] Compilation failed!
     pause
@@ -50,8 +50,8 @@ echo [OK] Compilation successful!
 echo.
 
 :: Launch
-echo [3/3] Starting Event Spectra Web Server on http://localhost:8080/ ...
+echo [3/3] Starting Event Spectra Web Server with MySQL on http://localhost:8080/ ...
 start "" "http://localhost:8080/"
-"%JAVA_CMD%" -cp bin Main 8080
+"%JAVA_CMD%" -cp "bin;lib\mysql-connector-j.jar" Main 8080
 
 pause

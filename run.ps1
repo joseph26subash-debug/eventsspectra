@@ -28,14 +28,14 @@ if (!(Test-Path "bin")) {
     New-Item -ItemType Directory -Path "bin" | Out-Null
 }
 
-Write-Host "[2/3] Compiling Java classes in src/..." -ForegroundColor Yellow
-& "${javaBin}javac" -d bin src/*.java
+Write-Host "[2/3] Compiling Java classes in src/... with MySQL Driver" -ForegroundColor Yellow
+& "${javaBin}javac" -cp "lib/mysql-connector-j.jar;." -d bin src/*.java
 if ($LASTEXITCODE -ne 0) {
     Write-Host "[ERROR] Compilation failed!" -ForegroundColor Red
     exit 1
 }
 Write-Host "[OK] Compilation complete!" -ForegroundColor Green
 
-Write-Host "[3/3] Starting Event Spectra Web Server on http://localhost:8080/ ..." -ForegroundColor Cyan
+Write-Host "[3/3] Starting Event Spectra Web Server with MySQL on http://localhost:8080/ ..." -ForegroundColor Cyan
 Start-Process "http://localhost:8080/"
-& "${javaBin}java" -cp bin Main 8080
+& "${javaBin}java" -cp "bin;lib/mysql-connector-j.jar" Main 8080

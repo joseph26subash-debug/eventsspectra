@@ -15,13 +15,80 @@ const AdminApp = {
   notifications: []
 };
 
+// Quick Fill for Admin Login Form
+window.quickFillAdmin = function() {
+  const u = document.getElementById("gateAdminUser");
+  const p = document.getElementById("gateAdminPass");
+  if (u) u.value = "admin@fisat.ac.in";
+  if (p) p.value = "admin123";
+};
+
 document.addEventListener("DOMContentLoaded", async () => {
   setupTabs();
   setupModals();
   setupBroadcastForm();
+  setupAdminAuthGate();
   await loadAdminData();
   renderAll();
 });
+
+function setupAdminAuthGate() {
+  const gate = document.getElementById("adminLoginGate");
+  const content = document.getElementById("adminConsoleContent");
+  const form = document.getElementById("adminGateLoginForm");
+  const logoutBtn = document.getElementById("adminLogoutBtn");
+
+  // Check if admin is currently authenticated in this browser session
+  const isAuth = sessionStorage.getItem("event_spectra_admin_auth") === "true";
+  if (isAuth) {
+    if (gate) gate.style.display = "none";
+    if (content) content.style.display = "block";
+  } else {
+    if (gate) gate.style.display = "block";
+    if (content) content.style.display = "none";
+  }
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const user = document.getElementById("gateAdminUser").value.trim();
+    const pass = document.getElementById("gateAdminPass").value;
+
+    try {
+      const res = await fetch(`${AdminApp.backendUrl}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: user, password: pass })
+      });
+      const data = await res.json();
+      if (data.success && data.user && data.user.role === "ADMIN") {
+        sessionStorage.setItem("event_spectra_admin_auth", "true");
+        if (gate) gate.style.display = "none";
+        if (content) content.style.display = "block";
+        showToast("Administrator Authentication Verified! Welcome to Central Oversight.", "success");
+        return;
+      } else {
+        showToast(data.error || "Access Denied: Administrative credentials required.", "error");
+      }
+    } catch (err) {
+      // Local fallback verification
+      if ((user.toLowerCase() === "admin@fisat.ac.in" || user.toLowerCase() === "admin") && pass === "admin123") {
+        sessionStorage.setItem("event_spectra_admin_auth", "true");
+        if (gate) gate.style.display = "none";
+        if (content) content.style.display = "block";
+        showToast("Administrator Authentication Verified!", "success");
+      } else {
+        showToast("Access Denied: Invalid administrator password.", "error");
+      }
+    }
+  });
+
+  logoutBtn?.addEventListener("click", () => {
+    sessionStorage.removeItem("event_spectra_admin_auth");
+    if (gate) gate.style.display = "block";
+    if (content) content.style.display = "none";
+    showToast("Administrator signed out.", "info");
+  });
+}
 
 function setupTabs() {
   const tabBtns = document.querySelectorAll(".tab-btn");

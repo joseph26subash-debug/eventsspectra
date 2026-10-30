@@ -106,9 +106,10 @@
       <div class="user-chip">
         <div class="user-avatar" style="background: linear-gradient(135deg, #EF4444, #B91C1C);">AD</div>
         <div class="user-info">
-          <span class="user-name">FISAT Administrator</span>
+          <span class="user-name" id="adminHeaderName">FISAT Administrator</span>
           <span class="user-role-badge" style="color: #F87171;">System Admin • Dean Office</span>
         </div>
+        <button id="adminLogoutBtn" class="pill-btn" style="margin-left: 0.5rem; border-color: rgba(239, 68, 68, 0.4); color: #FCA5A5;">🚪 Logout</button>
       </div>
     </div>
   </nav>
@@ -135,6 +136,44 @@
 
   <!-- Main Container -->
   <main class="container" style="padding-top: 1.5rem; padding-bottom: 4rem;">
+
+    <!-- Administrator Security Gate (Login Required) -->
+    <div id="adminLoginGate" class="admin-gate-overlay">
+      <div style="font-size: 3rem; margin-bottom: 0.75rem;">🛡️</div>
+      <h2 style="font-size: 1.6rem; font-weight: 800; color: #FCA5A5; margin-bottom: 0.5rem;">Administrator Authentication Required</h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
+        This block is strictly restricted to Dean of Academics and Student Affairs. Please sign in with your administrative credentials.
+      </p>
+
+      <!-- Quick Fill Demo -->
+      <div class="demo-credentials-box" style="text-align: left; margin-bottom: 1.5rem;">
+        <div class="demo-credentials-title">⚡ Evaluator Demo Credentials:</div>
+        <div class="demo-chip" onclick="quickFillAdmin()">
+          <span>🛡️ <strong>Admin Account:</strong> admin@fisat.ac.in</span>
+          <code>Password: admin123</code>
+        </div>
+      </div>
+
+      <form id="adminGateLoginForm" style="text-align: left;">
+        <div class="form-group">
+          <label>Administrator Username or Email *</label>
+          <input type="text" id="gateAdminUser" required placeholder="admin@fisat.ac.in">
+        </div>
+        <div class="form-group">
+          <label>Security Password *</label>
+          <input type="password" id="gateAdminPass" required placeholder="Enter password (admin123)">
+        </div>
+        <div style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem;">
+          <button type="submit" class="btn btn-primary btn-large btn-block" style="background: #EF4444; border-color: #EF4444;">
+            Unlock Administrator Console
+          </button>
+          <a href="index.html" class="btn btn-outline btn-block" style="text-align: center;">Back to Student Portal</a>
+        </div>
+      </form>
+    </div>
+
+    <!-- Protected Console Content (Shown once authenticated) -->
+    <div id="adminConsoleContent" style="display: none;">
 
     <!-- KPI Summary Row (Page 8 Modules) -->
     <div class="stats-row">
@@ -369,6 +408,7 @@
       </div>
     </section>
 
+    </div><!-- End #adminConsoleContent -->
   </main>
 
   <!-- MODAL: Add New Student -->

@@ -45,18 +45,34 @@
       </div>
 
       <!-- Current User Profile & Role Switcher -->
-      <div class="user-profile-menu">
-        <div class="user-chip" id="userMenuToggle">
-          <div class="user-avatar" id="currentAvatar">JS</div>
-          <div class="user-info">
-            <span class="user-name" id="currentUserName">Joseph P Subash</span>
-            <span class="user-role-badge" id="currentUserRoleBadge">Student (Roll 48)</span>
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <button id="openAuthModalBtn" class="pill-btn accent-pill" style="font-weight: 700;"><span class="icon">🔑</span> Login / Register</button>
+        <div class="user-profile-menu">
+          <div class="user-chip" id="userMenuToggle">
+            <div class="user-avatar" id="currentAvatar">JS</div>
+            <div class="user-info">
+              <span class="user-name" id="currentUserName">Joseph P Subash</span>
+              <span class="user-role-badge" id="currentUserRoleBadge">Student (Roll 48)</span>
+            </div>
+            <span class="chevron">▼</span>
           </div>
-          <span class="chevron">▼</span>
-        </div>
 
-        <div class="user-dropdown hidden" id="userDropdown">
-          <div class="dropdown-header">Switch User Role (Demo Mode)</div>
+          <div class="user-dropdown hidden" id="userDropdown">
+            <div class="dropdown-header">Active Session</div>
+            <div style="padding: 0.35rem 0.5rem; font-size: 0.78rem; color: var(--text-dim);" id="dropdownUserDetails">
+              joseph.subash@fisat.ac.in
+            </div>
+            <button class="user-switch-item" id="dropdownAuthBtn" style="border-left: 3px solid var(--accent-cyan); margin-bottom: 0.3rem;">
+              <div class="item-name">🔑 Sign In With Another Account</div>
+              <div class="item-sub">Switch student, coordinator, or admin</div>
+            </button>
+            <button class="user-switch-item" id="logoutBtn" style="border-left: 3px solid #EF4444; margin-bottom: 0.5rem;">
+              <div class="item-name" style="color: #F87171;">🚪 Log Out</div>
+              <div class="item-sub">Clear current session</div>
+            </button>
+
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-header">Quick Role Switch (Demo Mode)</div>
           
           <div class="dropdown-section-title">Students (FISAT S4 CSE)</div>
           <button class="user-switch-item" data-userid="48">
@@ -103,6 +119,7 @@
           </button>
         </div>
       </div>
+    </div>
     </div>
   </nav>
 
@@ -735,6 +752,147 @@
           </tbody>
         </table>
       </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Unified Authentication & Login (MySQL API Powered) -->
+  <div class="modal-overlay hidden" id="authModal">
+    <div class="modal-card modal-large">
+      <button class="modal-close" id="closeAuthModal">&times;</button>
+      <div class="modal-badge-row">
+        <span class="role-tag" id="authDbBadge">🐬 MySQL JDBC Authentication Active</span>
+      </div>
+      <h2 class="modal-title">Sign In to Event Spectra</h2>
+      <p class="modal-desc">Access your student bookings, club coordinator operations, or administrative oversight.</p>
+
+      <!-- Quick Demo Credentials Box for Viva / Evaluators -->
+      <div class="demo-credentials-box">
+        <div class="demo-credentials-title">
+          <span>⚡ Click to Auto-Fill Credentials (Demo & Evaluation):</span>
+          <span style="font-size: 0.72rem; color: var(--text-dim);">Pure MySQL Verification</span>
+        </div>
+        <div class="demo-credentials-grid">
+          <div class="demo-chip" onclick="quickFillAuth('STUDENT', 'joseph.subash@fisat.ac.in', 'pass123')">
+            <span>👨‍🎓 <strong>Student:</strong> Joseph P Subash (Roll 48)</span>
+            <code>joseph.subash@fisat.ac.in / pass123</code>
+          </div>
+          <div class="demo-chip" onclick="quickFillAuth('COORDINATOR', 'acm@fisat.ac.in', 'acm123')">
+            <span>🏛️ <strong>Club Coordinator:</strong> FISAT ACM Chapter</span>
+            <code>acm@fisat.ac.in / acm123</code>
+          </div>
+          <div class="demo-chip" onclick="quickFillAuth('ADMIN', 'admin@fisat.ac.in', 'admin123')">
+            <span>🛡️ <strong>Administrator:</strong> Dean & Student Affairs</span>
+            <code>admin@fisat.ac.in / admin123</code>
+          </div>
+        </div>
+      </div>
+
+      <!-- Auth Tabs -->
+      <div class="auth-tab-buttons">
+        <button class="auth-tab-btn active" data-target="tab-auth-student">🎓 Student Login</button>
+        <button class="auth-tab-btn" data-target="tab-auth-register">✍️ Student Sign Up</button>
+        <button class="auth-tab-btn" data-target="tab-auth-club">🏛️ Club Coordinator Login</button>
+        <button class="auth-tab-btn" data-target="tab-auth-admin">🛡️ Administrator Login</button>
+      </div>
+
+      <!-- TAB 1: Student Login -->
+      <div id="tab-auth-student" class="auth-tab-pane active">
+        <form id="studentLoginForm">
+          <div class="form-group">
+            <label>Student Email Address or Roll Number *</label>
+            <input type="text" id="studentLoginEmail" required placeholder="e.g. joseph.subash@fisat.ac.in or 48">
+          </div>
+          <div class="form-group">
+            <label>Password *</label>
+            <input type="password" id="studentLoginPass" required placeholder="Enter password (default: pass123)">
+          </div>
+          <div class="modal-actions" style="margin-top: 1.25rem;">
+            <button type="submit" class="btn btn-primary btn-large btn-block">Sign In as Student</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- TAB 2: Student Sign Up (New User Registration into MySQL) -->
+      <div id="tab-auth-register" class="auth-tab-pane">
+        <form id="studentRegisterForm">
+          <div class="form-row">
+            <div class="form-group flex-2">
+              <label>Full Name *</label>
+              <input type="text" id="regName" required placeholder="e.g. Rahul Sharma">
+            </div>
+            <div class="form-group flex-1">
+              <label>Roll Number</label>
+              <input type="number" id="regRoll" placeholder="e.g. 52">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label>Email Address *</label>
+              <input type="email" id="regEmail" required placeholder="student@fisat.ac.in">
+            </div>
+            <div class="form-group flex-1">
+              <label>Password *</label>
+              <input type="password" id="regPass" required placeholder="Create password">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group flex-2">
+              <label>Course / Program *</label>
+              <input type="text" id="regCourse" value="B.Tech Computer Science & Engineering" required>
+            </div>
+            <div class="form-group flex-1">
+              <label>Semester *</label>
+              <input type="number" id="regSem" value="4" min="1" max="8" required>
+            </div>
+            <div class="form-group flex-1">
+              <label>Phone Number</label>
+              <input type="tel" id="regPhone" placeholder="+91 98471 00000">
+            </div>
+          </div>
+          <div class="modal-actions" style="margin-top: 1.25rem;">
+            <button type="submit" class="btn btn-primary btn-large btn-block">Register & Save to MySQL Database</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- TAB 3: Club Coordinator Login -->
+      <div id="tab-auth-club" class="auth-tab-pane">
+        <form id="clubLoginForm">
+          <div class="form-group">
+            <label>Club Official Email Address *</label>
+            <input type="email" id="clubLoginEmail" required placeholder="e.g. acm@fisat.ac.in, ieee@fisat.ac.in">
+          </div>
+          <div class="form-group">
+            <label>Club Access Password *</label>
+            <input type="password" id="clubLoginPass" required placeholder="Enter club password (e.g. acm123)">
+          </div>
+          <div class="modal-actions" style="margin-top: 1.25rem;">
+            <button type="submit" class="btn btn-primary btn-large btn-block" style="background: linear-gradient(135deg, #8338EC, #3A86FF);">
+              Enter Club Coordinator Workspace
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- TAB 4: Administrator Login -->
+      <div id="tab-auth-admin" class="auth-tab-pane">
+        <form id="adminLoginForm">
+          <div class="form-group">
+            <label>Administrator Username or Email *</label>
+            <input type="text" id="adminLoginEmail" required placeholder="admin@fisat.ac.in">
+          </div>
+          <div class="form-group">
+            <label>Admin Security Password *</label>
+            <input type="password" id="adminLoginPass" required placeholder="Enter administrative password (admin123)">
+          </div>
+          <div class="modal-actions" style="margin-top: 1.25rem;">
+            <button type="submit" class="btn btn-danger btn-large btn-block">
+              Unlock Central Administration Console
+            </button>
+          </div>
+        </form>
+      </div>
+
     </div>
   </div>
 
