@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FISAT Admin Console | Event Spectra</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* Dedicated Admin Portal Overrides */
+    .admin-navbar {
+      background: rgba(15, 23, 42, 0.95);
+      border-bottom: 2px solid rgba(239, 68, 68, 0.4);
+    }
+    .admin-brand-badge {
+      background: rgba(239, 68, 68, 0.15);
+      color: #F87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+    }
+    .admin-hero {
+      background: radial-gradient(circle at 50% 20%, rgba(239, 68, 68, 0.12), transparent 70%);
+      padding: 2.5rem 0 2rem;
+    }
+    .tab-btn-group {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1rem;
+      margin-bottom: 2rem;
+      overflow-x: auto;
+    }
+    .tab-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 0.6rem 1.2rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+    .tab-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-main);
+    }
+    .tab-btn.active {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: #EF4444;
+      color: #FCA5A5;
+    }
+    .broadcast-box {
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <header class="top-bar" style="border-bottom-color: rgba(239, 68, 68, 0.3);">
+    <div class="top-bar-content">
+      <span class="live-pulse" style="background-color: #EF4444; box-shadow: 0 0 8px #EF4444;"></span>
+      <span class="top-text"><strong>EVENT SPECTRA — CENTRAL ADMINISTRATIVE PORTAL:</strong> Office of the Principal & Dean Academics, FISAT</span>
+      <div class="top-actions">
+        <a href="index.html" class="pill-btn"><span class="icon">🎓</span> Open Student Portal</a>
+        <button id="oopDocBtn" class="pill-btn accent-pill"><span class="icon">☕</span> Java OOP Architecture</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Admin Navigation Bar -->
+  <nav class="navbar admin-navbar">
+    <div class="nav-container">
+      <div class="brand-group" onclick="location.href='admin.html'">
+        <div class="logo-symbol" style="background: linear-gradient(135deg, #EF4444, #991B1B); color: white;">🛡️</div>
+        <div class="brand-text">
+          <span class="brand-title">EVENT SPECTRA <span class="admin-brand-badge">ADMIN CONSOLE</span></span>
+          <span class="brand-subtitle" style="color: #FCA5A5;">FISAT Centralized Administrative Authority</span>
+        </div>
+      </div>
+
+      <div class="nav-links">
+        <a href="#overview" class="nav-link active" data-tab="overview">📊 Overview</a>
+        <a href="#students" class="nav-link" data-tab="students">👨‍🎓 Student Management</a>
+        <a href="#clubs" class="nav-link" data-tab="clubs">🏛️ Club Management</a>
+        <a href="#events" class="nav-link" data-tab="events">📅 Event Oversight</a>
+        <a href="#registrations" class="nav-link" data-tab="registrations">🎟️ Master Bookings</a>
+        <a href="#broadcast" class="nav-link" data-tab="broadcast">📢 Broadcast Center</a>
+      </div>
+
+      <div class="user-chip">
+        <div class="user-avatar" style="background: linear-gradient(135deg, #EF4444, #B91C1C);">AD</div>
+        <div class="user-info">
+          <span class="user-name">FISAT Administrator</span>
+          <span class="user-role-badge" style="color: #F87171;">System Admin • Dean Office</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Admin Hero Section -->
+  <section class="admin-hero">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <span class="role-tag admin-tag">Executive Access</span>
+          <h1 style="font-size: 2.2rem; font-weight: 800; margin: 0.25rem 0;">Central Administration Dashboard</h1>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">
+            Full supervisory control over student accounts, club coordinators, events, bookings, and campus broadcasts.
+          </p>
+        </div>
+        <div>
+          <a href="index.html" class="btn btn-outline" style="border-color: #38BDF8; color: #38BDF8;">
+            ← Switch to Student / Club View
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Container -->
+  <main class="container" style="padding-top: 1.5rem; padding-bottom: 4rem;">
+
+    <!-- KPI Summary Row (Page 8 Modules) -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-number" id="statStudents" style="color: #38BDF8;">5</div>
+        <div class="stat-label">Enrolled Students</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="statClubs" style="color: #A78BFA;">4</div>
+        <div class="stat-label">Recognized Clubs</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="statEvents" style="color: #F59E0B;">5</div>
+        <div class="stat-label">Total Events Active</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="statBookings" style="color: #10B981;">4</div>
+        <div class="stat-label">Total Student Bookings</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="statCerts" style="color: #EF4444;">2</div>
+        <div class="stat-label">Certificates Issued</div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs Buttons -->
+    <div class="tab-btn-group">
+      <button class="tab-btn active" data-target="tab-overview">📊 System Overview</button>
+      <button class="tab-btn" data-target="tab-students">👨‍🎓 Student Management (Roster)</button>
+      <button class="tab-btn" data-target="tab-clubs">🏛️ Club Management & Coordinators</button>
+      <button class="tab-btn" data-target="tab-events">📅 Event Oversight & Moderation</button>
+      <button class="tab-btn" data-target="tab-registrations">🎟️ Master Registration Roster</button>
+      <button class="tab-btn" data-target="tab-broadcast">📢 Emergency / Campus Broadcast</button>
+    </div>
+
+    <!-- TAB 1: SYSTEM OVERVIEW -->
+    <section id="tab-overview" class="admin-tab-pane active">
+      <div class="dual-columns">
+        <div class="table-card">
+          <div class="table-header">
+            <h3>Recent Event Spectrums & Hackathons</h3>
+            <p class="table-sub">Live feed of events organized across FISAT departments.</p>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table" id="overviewEventsTable">
+              <thead>
+                <tr>
+                  <th>Event Title</th>
+                  <th>Club</th>
+                  <th>Category</th>
+                  <th>Capacity</th>
+                </tr>
+              </thead>
+              <tbody><!-- Injected dynamically --></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="table-header">
+            <h3>System Status & Java OOP Engine</h3>
+            <p class="table-sub">Backend telemetry & architectural compliance.</p>
+          </div>
+          <div style="padding: 1rem; font-size: 0.88rem; display: flex; flex-direction: column; gap: 0.85rem;">
+            <div style="background: rgba(255, 255, 255, 0.04); padding: 0.85rem; border-radius: 8px;">
+              <strong>Java Server Architecture:</strong> <code>com.sun.net.httpserver.HttpServer</code> (Port 8080)
+            </div>
+            <div style="background: rgba(255, 255, 255, 0.04); padding: 0.85rem; border-radius: 8px;">
+              <strong>OOP Model Hierarchy:</strong> <code>User</code> &rarr; <code>Student</code>, <code>ClubOrganizer</code>, <code>Administrator</code>
+            </div>
+            <div style="background: rgba(255, 255, 255, 0.04); padding: 0.85rem; border-radius: 8px;">
+              <strong>Polymorphic Dispatch:</strong> <code>Event</code> &rarr; <code>Hackathon</code> (overrides <code>getDetails()</code>)
+            </div>
+            <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); padding: 0.85rem; border-radius: 8px; color: #6EE7B7;">
+              ✓ Database State: Operational (In-Memory Java Collections)
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: STUDENT MANAGEMENT (Page 8 Module) -->
+    <section id="tab-students" class="admin-tab-pane" style="display: none;">
+      <div class="table-card">
+        <div class="table-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+          <div>
+            <h3>Enrolled Student Directory (FISAT CSE)</h3>
+            <p class="table-sub">Manage student profiles, verify semester enrollment, and inspect activity.</p>
+          </div>
+          <button id="openAddStudentModal" class="btn btn-primary btn-sm">+ Enroll New Student</button>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table" id="studentsMasterTable">
+            <thead>
+              <tr>
+                <th>Roll No</th>
+                <th>Student Name</th>
+                <th>Email Address</th>
+                <th>Course</th>
+                <th>Semester</th>
+                <th>Phone</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody><!-- Injected dynamically --></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: CLUB MANAGEMENT (Page 8 Module) -->
+    <section id="tab-clubs" class="admin-tab-pane" style="display: none;">
+      <div class="table-card">
+        <div class="table-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+          <div>
+            <h3>Recognized College Clubs & Chapters</h3>
+            <p class="table-sub">Supervise club coordinators, approved societies, and computing bodies.</p>
+          </div>
+          <button id="openAddClubModal" class="btn btn-primary btn-sm">+ Register New Club</button>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table" id="clubsMasterTable">
+            <thead>
+              <tr>
+                <th>Club ID</th>
+                <th>Club / Society Name</th>
+                <th>Official Email</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody><!-- Injected dynamically --></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: EVENT OVERSIGHT & MODERATION (Page 8 Module) -->
+    <section id="tab-events" class="admin-tab-pane" style="display: none;">
+      <div class="table-card">
+        <div class="table-header">
+          <h3>College-Wide Event Directory & Moderation</h3>
+          <p class="table-sub">Administrator authority to inspect, update, or cancel any club event.</p>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table" id="eventsMasterTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Host Club</th>
+                <th>Category</th>
+                <th>Date & Time</th>
+                <th>Venue</th>
+                <th>Capacity</th>
+                <th>Status</th>
+                <th>Admin Action</th>
+              </tr>
+            </thead>
+            <tbody><!-- Injected dynamically --></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: MASTER REGISTRATION ROSTER -->
+    <section id="tab-registrations" class="admin-tab-pane" style="display: none;">
+      <div class="table-card">
+        <div class="table-header">
+          <h3>Master Student Registration & Booking Ledger</h3>
+          <p class="table-sub">Real-time ledger of all seat bookings across all workshops, hackathons, and competitions.</p>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table" id="registrationsMasterTable">
+            <thead>
+              <tr>
+                <th>Booking ID</th>
+                <th>Student Name</th>
+                <th>Roll No</th>
+                <th>Event Title</th>
+                <th>Booking Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody><!-- Injected dynamically --></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6: BROADCAST CENTER (Page 8 Module) -->
+    <section id="tab-broadcast" class="admin-tab-pane" style="display: none;">
+      <div class="broadcast-box">
+        <h3 style="color: #F87171; margin-bottom: 0.5rem;">📢 Campus-Wide Emergency & Official Notification Broadcast</h3>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.5rem;">
+          Broadcast urgent announcements, registration reminders, or scheduling changes directly to all students' and coordinators' notification hubs.
+        </p>
+
+        <form id="adminBroadcastForm">
+          <div class="form-group">
+            <label>Announcement Headline / Title *</label>
+            <input type="text" id="broadcastTitle" placeholder="e.g. Schedule Update: TechFest Hackathon Extended" required>
+          </div>
+          <div class="form-group">
+            <label>Message Content *</label>
+            <textarea id="broadcastContent" rows="4" placeholder="Enter details to be displayed on every student dashboard..." required></textarea>
+          </div>
+          <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+            <button type="submit" class="btn btn-primary" style="background: #EF4444; border-color: #EF4444;">Dispatch Campus Alert</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="table-card">
+        <div class="table-header">
+          <h3>Broadcast History & Audit Log</h3>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table" id="broadcastHistoryTable">
+            <thead>
+              <tr>
+                <th>Alert ID</th>
+                <th>Message Content</th>
+                <th>Timestamp</th>
+                <th>Audience</th>
+              </tr>
+            </thead>
+            <tbody><!-- Injected dynamically --></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: Add New Student -->
+  <div class="modal-overlay hidden" id="addStudentModal">
+    <div class="modal-card">
+      <button class="modal-close" id="closeAddStudentModal">&times;</button>
+      <h2 class="modal-title">Enroll New Student</h2>
+      <p class="modal-desc">Add student account to Event Spectra database.</p>
+      <form id="addStudentForm">
+        <div class="form-group">
+          <label>Full Name *</label>
+          <input type="text" id="newStudentName" required placeholder="e.g. Kevin George">
+        </div>
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label>Roll Number *</label>
+            <input type="number" id="newStudentRoll" required placeholder="e.g. 51">
+          </div>
+          <div class="form-group flex-1">
+            <label>Semester *</label>
+            <input type="number" id="newStudentSem" value="4" min="1" max="8" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Course / Department *</label>
+          <input type="text" id="newStudentCourse" value="B.Tech Computer Science & Engineering" required>
+        </div>
+        <div class="form-group">
+          <label>Email Address *</label>
+          <input type="email" id="newStudentEmail" required placeholder="student@fisat.ac.in">
+        </div>
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-primary">Enroll Student</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-left">
+        <strong>EVENT SPECTRA — Central Administrative Portal</strong>
+        <div class="footer-sub">Federal Institute of Science and Technology (FISAT) • Office of Student Affairs</div>
+      </div>
+      <div class="footer-right">
+        <a href="index.html" style="color: var(--accent-cyan); text-decoration: none; font-weight: 600;">Go to Student Portal &rarr;</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="admin.js"></script>
+</body>
+</html>

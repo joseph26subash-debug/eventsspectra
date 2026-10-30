@@ -23,10 +23,10 @@ public class SimpleHttpServer {
 
     public SimpleHttpServer(int port) {
         this.port = port;
-        // Check web directory location (either ./web or ../web)
+        // Check web directory location (web/ or root .)
         File dir = new File("web");
-        if (!dir.exists()) {
-            dir = new File("../web");
+        if (!dir.exists() || !new File(dir, "index.html").exists()) {
+            dir = new File(".");
         }
         this.webDir = dir;
     }

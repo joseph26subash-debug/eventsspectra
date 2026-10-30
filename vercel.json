@@ -1,14 +1,3 @@
 {
-  "version": 2,
-  "cleanUrls": true,
-  "rewrites": [
-    { "source": "/", "destination": "/web/index.html" },
-    { "source": "/admin", "destination": "/web/admin.html" },
-    { "source": "/admin.html", "destination": "/web/admin.html" },
-    { "source": "/index.html", "destination": "/web/index.html" },
-    { "source": "/style.css", "destination": "/web/style.css" },
-    { "source": "/app.js", "destination": "/web/app.js" },
-    { "source": "/admin.js", "destination": "/web/admin.js" },
-    { "source": "/(.*)", "destination": "/web/$1" }
-  ]
+  "cleanUrls": true
 }

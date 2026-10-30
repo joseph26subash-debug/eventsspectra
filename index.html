@@ -2,13 +2,759 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=web/index.html">
-  <title>Event Spectra | FISAT Centralized Event Platform</title>
-  <script>window.location.replace("web/index.html");</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Spectra | Centralized Event Portal - FISAT</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
-<body style="background:#090E1D; color:#94A3B8; font-family:sans-serif; text-align:center; padding-top:20vh;">
-  <h2>EVENT SPECTRA</h2>
-  <p>Federal Institute of Science and Technology (FISAT)</p>
-  <p>Loading application... If not automatically redirected, <a href="web/index.html" style="color:#00D2FF;">click here to enter</a>.</p>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <header class="top-bar">
+    <div class="top-bar-content">
+      <span class="live-pulse"></span>
+      <span class="top-text"><strong>FISAT EVENT SPECTRA:</strong> Centralized Event Management Platform for Federal Institute of Science and Technology</span>
+      <div class="top-actions">
+        <a href="admin.html" class="pill-btn" style="border-color: rgba(239, 68, 68, 0.4); color: #F87171;"><span class="icon">🛡️</span> Admin Console</a>
+        <button id="teamBtn" class="pill-btn"><span class="icon">👥</span> Project Team (Roll 46 - 50)</button>
+        <button id="oopDocBtn" class="pill-btn accent-pill"><span class="icon">☕</span> Java OOP Architecture</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="brand-group">
+        <div class="logo-symbol">ES</div>
+        <div class="brand-text">
+          <span class="brand-title">EVENT SPECTRA</span>
+          <span class="brand-subtitle">FISAT • All Events In A Nutshell</span>
+        </div>
+      </div>
+
+      <div class="nav-links">
+        <a href="#discover" class="nav-link active" data-tab="discover"><span class="nav-icon">🎯</span> Discover</a>
+        <a href="#my-registrations" class="nav-link" data-tab="registrations"><span class="nav-icon">🎟️</span> My Bookings <span id="regBadge" class="badge">0</span></a>
+        <a href="#certificates" class="nav-link" data-tab="certificates"><span class="nav-icon">📜</span> Certificates <span id="certBadge" class="badge">0</span></a>
+        <a href="#notifications" class="nav-link" data-tab="notifications"><span class="nav-icon">🔔</span> Alerts <span id="notifBadge" class="badge dot">0</span></a>
+        <a href="#coordinator" class="nav-link role-locked coord-only" data-tab="coordinator"><span class="nav-icon">⚡</span> Club Portal</a>
+        <a href="#admin" class="nav-link role-locked admin-only" data-tab="admin"><span class="nav-icon">🛡️</span> Admin Panel</a>
+      </div>
+
+      <!-- Current User Profile & Role Switcher -->
+      <div class="user-profile-menu">
+        <div class="user-chip" id="userMenuToggle">
+          <div class="user-avatar" id="currentAvatar">JS</div>
+          <div class="user-info">
+            <span class="user-name" id="currentUserName">Joseph P Subash</span>
+            <span class="user-role-badge" id="currentUserRoleBadge">Student (Roll 48)</span>
+          </div>
+          <span class="chevron">▼</span>
+        </div>
+
+        <div class="user-dropdown hidden" id="userDropdown">
+          <div class="dropdown-header">Switch User Role (Demo Mode)</div>
+          
+          <div class="dropdown-section-title">Students (FISAT S4 CSE)</div>
+          <button class="user-switch-item" data-userid="48">
+            <div class="item-name">Joseph P Subash</div>
+            <div class="item-sub">Roll No: 48 • B.Tech CSE</div>
+          </button>
+          <button class="user-switch-item" data-userid="46">
+            <div class="item-name">Joanna Jomon</div>
+            <div class="item-sub">Roll No: 46 • B.Tech CSE</div>
+          </button>
+          <button class="user-switch-item" data-userid="47">
+            <div class="item-name">Joel Shantu</div>
+            <div class="item-sub">Roll No: 47 • B.Tech CSE</div>
+          </button>
+          <button class="user-switch-item" data-userid="49">
+            <div class="item-name">Joshua Jomesh</div>
+            <div class="item-sub">Roll No: 49 • B.Tech CSE</div>
+          </button>
+          <button class="user-switch-item" data-userid="50">
+            <div class="item-name">Jovial J Thattil</div>
+            <div class="item-sub">Roll No: 50 • B.Tech CSE</div>
+          </button>
+
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-section-title">Club Coordinators</div>
+          <button class="user-switch-item" data-userid="101">
+            <div class="item-name">ACM FISAT Chapter</div>
+            <div class="item-sub">Coordinator Account</div>
+          </button>
+          <button class="user-switch-item" data-userid="102">
+            <div class="item-name">IEEE SB FISAT</div>
+            <div class="item-sub">Coordinator Account</div>
+          </button>
+          <button class="user-switch-item" data-userid="103">
+            <div class="item-name">FOSS Cell FISAT</div>
+            <div class="item-sub">Coordinator Account</div>
+          </button>
+
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-section-title">Administration</div>
+          <button class="user-switch-item" data-userid="1">
+            <div class="item-name">FISAT Administrator</div>
+            <div class="item-sub">Dean / Student Affairs</div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-bg-glow"></div>
+    <div class="container hero-container">
+      <div class="hero-badge">Federal Institute of Science and Technology (FISAT)</div>
+      <h1 class="hero-title">EVENT <span class="gradient-text">SPECTRA</span></h1>
+      <p class="hero-tagline">All events in a nutshell — A centralized event management platform for FISAT students.</p>
+      <div class="motto-row">
+        <span class="motto-pill">✨ Discover</span>
+        <span class="motto-dot">•</span>
+        <span class="motto-pill">📝 Register</span>
+        <span class="motto-dot">•</span>
+        <span class="motto-pill">🚀 Participate</span>
+        <span class="motto-dot">•</span>
+        <span class="motto-pill">🏆 Achieve</span>
+      </div>
+
+      <!-- Quick Search & Category Filter Toolbar -->
+      <div class="search-bar-wrapper">
+        <div class="search-input-group">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInput" placeholder="Search events, workshops, hackathons, clubs, venues...">
+        </div>
+        <div class="filter-chips">
+          <button class="filter-chip active" data-filter="ALL">All Events</button>
+          <button class="filter-chip chip-today" data-filter="TODAY">🔥 Today's Events</button>
+          <button class="filter-chip chip-hackathon" data-filter="Hackathon">⚡ Hackathons</button>
+          <button class="filter-chip" data-filter="Workshop">🛠️ Workshops</button>
+          <button class="filter-chip" data-filter="Competition">🏆 Competitions</button>
+          <button class="filter-chip" data-filter="Technical">💻 Technical</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Container with Tabs -->
+  <main class="container main-content">
+
+    <!-- TAB 1: Event Discovery (Default) -->
+    <section id="tab-discover" class="tab-pane active">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Explore Events</h2>
+          <p class="section-subtitle">Real-time schedule of workshops, competitions, and technical hackathons across FISAT clubs.</p>
+        </div>
+        <div class="view-status">
+          <span class="indicator-dot"></span>
+          <span id="backendStatus">Connecting to Java Backend...</span>
+        </div>
+      </div>
+
+      <!-- Events Grid -->
+      <div class="events-grid" id="eventsGrid">
+        <!-- Rendered dynamically by app.js -->
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <p>Loading events from Event Spectra Java Engine...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: My Bookings & Registrations -->
+    <section id="tab-registrations" class="tab-pane">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">My Registered Events</h2>
+          <p class="section-subtitle">View and manage your confirmed participations, schedules, and reminders.</p>
+        </div>
+      </div>
+
+      <div class="registrations-list" id="registrationsContainer">
+        <!-- Injected dynamically -->
+      </div>
+    </section>
+
+    <!-- TAB 3: Certificates Hub -->
+    <section id="tab-certificates" class="tab-pane">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Participation & Merit Certificates</h2>
+          <p class="section-subtitle">Centralized certificate vault. Instantly preview, verify, and download your accredited credentials.</p>
+        </div>
+      </div>
+
+      <div class="certificates-grid" id="certificatesContainer">
+        <!-- Injected dynamically -->
+      </div>
+    </section>
+
+    <!-- TAB 4: Notifications & Reminders -->
+    <section id="tab-notifications" class="tab-pane">
+      <div class="dual-columns">
+        <div class="column-card">
+          <div class="card-header-row">
+            <h3 class="card-title">🔔 Announcements & Alerts</h3>
+            <button id="markAllReadBtn" class="link-btn">Mark all read</button>
+          </div>
+          <div class="notification-list" id="notificationsList">
+            <!-- Notifications injected dynamically -->
+          </div>
+        </div>
+
+        <div class="column-card">
+          <div class="card-header-row">
+            <h3 class="card-title">⏰ Active Event Reminders</h3>
+            <button id="openNewReminderBtn" class="btn btn-sm btn-outline">+ Set Reminder</button>
+          </div>
+          <div class="reminder-list" id="remindersList">
+            <!-- Reminders injected dynamically -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: Club Coordinator Portal (Page 6 & 8) -->
+    <section id="tab-coordinator" class="tab-pane">
+      <div class="section-header">
+        <div>
+          <span class="role-tag">Club Coordinator Workspace</span>
+          <h2 class="section-title" id="coordClubName">FISAT ACM Student Chapter</h2>
+          <p class="section-subtitle">Create and publish events, track participant rosters, trigger reminders, and issue verified certificates.</p>
+        </div>
+        <button id="openCreateEventModalBtn" class="btn btn-primary">+ Create & Publish Event</button>
+      </div>
+
+      <!-- Coordinator Stats -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-number" id="coordTotalEvents">0</div>
+          <div class="stat-label">Total Events Published</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="coordTotalRegistrations">0</div>
+          <div class="stat-label">Total Registrations</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="coordTotalCertificates">0</div>
+          <div class="stat-label">Certificates Issued</div>
+        </div>
+      </div>
+
+      <!-- Published Events Table -->
+      <div class="table-card">
+        <div class="table-header">
+          <h3>Events Managed by Your Club</h3>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table" id="coordEventsTable">
+            <thead>
+              <tr>
+                <th>Event ID</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Date & Time</th>
+                <th>Venue</th>
+                <th>Registrations</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Injected dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Manage Participants Section -->
+      <div class="table-card" style="margin-top: 2rem;">
+        <div class="table-header">
+          <h3>Registered Participants & Certificate Issuance</h3>
+          <p class="table-sub">Verify attendance and issue official completion e-certificates.</p>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table" id="coordParticipantsTable">
+            <thead>
+              <tr>
+                <th>Booking ID</th>
+                <th>Student Name</th>
+                <th>Course & Sem</th>
+                <th>Event Name</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Injected dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6: Administrator Panel (Page 6 & 8) -->
+    <section id="tab-admin" class="tab-pane">
+      <div class="section-header">
+        <div>
+          <span class="role-tag admin-tag">System Administration</span>
+          <h2 class="section-title">Central Oversight & Audit Console</h2>
+          <p class="section-subtitle">Full campus event directory, student roster, club coordinators, and operational telemetry.</p>
+        </div>
+        <button id="broadcastAlertBtn" class="btn btn-secondary">📢 Broadcast Campus Alert</button>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-number" id="adminStatStudents">5</div>
+          <div class="stat-label">Active Students</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="adminStatClubs">4</div>
+          <div class="stat-label">Registered Clubs</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="adminStatEvents">5</div>
+          <div class="stat-label">Total Events</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="adminStatRegistrations">4</div>
+          <div class="stat-label">Bookings Handled</div>
+        </div>
+      </div>
+
+      <!-- Users & Clubs Roster -->
+      <div class="dual-columns" style="margin-top: 2rem;">
+        <div class="table-card">
+          <div class="table-header">
+            <h3>Registered Student Accounts</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table" id="adminStudentsTable">
+              <thead>
+                <tr>
+                  <th>Roll No</th>
+                  <th>Student Name</th>
+                  <th>Email</th>
+                  <th>Course</th>
+                </tr>
+              </thead>
+              <tbody><!-- Injected dynamically --></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="table-header">
+            <h3>Club Coordinator Accounts</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table" id="adminClubsTable">
+              <thead>
+                <tr>
+                  <th>Club ID</th>
+                  <th>Club Name</th>
+                  <th>Email</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody><!-- Injected dynamically --></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL: Event Details & Registration -->
+  <div class="modal-overlay hidden" id="eventModal">
+    <div class="modal-card">
+      <button class="modal-close" id="closeEventModal">&times;</button>
+      <div class="modal-badge-row">
+        <span class="event-category-badge" id="modalCategoryBadge">Hackathon</span>
+        <span class="event-club-badge" id="modalClubBadge">ACM FISAT</span>
+      </div>
+      <h2 class="modal-title" id="modalTitle">Event Title</h2>
+      <p class="modal-desc" id="modalDesc">Detailed description of the event...</p>
+
+      <!-- Hackathon Specific Details Box -->
+      <div class="hackathon-details-box hidden" id="modalHackathonBox">
+        <div class="hack-title">⚡ Hackathon Specifications (Inherited Class)</div>
+        <div class="hack-grid">
+          <div><strong>Theme:</strong> <span id="modalHackTheme">-</span></div>
+          <div><strong>Duration:</strong> <span id="modalHackDuration">-</span></div>
+          <div><strong>Team Size:</strong> <span id="modalHackTeamSize">-</span></div>
+        </div>
+      </div>
+
+      <div class="modal-info-grid">
+        <div class="info-item">
+          <span class="info-label">📅 Date</span>
+          <span class="info-value" id="modalDate">-</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">⏰ Time</span>
+          <span class="info-value" id="modalTime">-</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">📍 Venue</span>
+          <span class="info-value" id="modalVenue">-</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">👥 Capacity & Booking</span>
+          <span class="info-value" id="modalCapacity">-</span>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button id="modalRegisterBtn" class="btn btn-primary btn-large">Register / Book Participation</button>
+        <button id="modalReminderBtn" class="btn btn-outline">⏰ Set Reminder</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Create New Event (Coordinator) -->
+  <div class="modal-overlay hidden" id="createEventModal">
+    <div class="modal-card modal-large">
+      <button class="modal-close" id="closeCreateEventModal">&times;</button>
+      <div class="modal-badge-row">
+        <span class="role-tag">Club Coordinator Action</span>
+      </div>
+      <h2 class="modal-title">Publish New Event / Hackathon</h2>
+      <p class="modal-desc">Fill in the event parameters. Polymorphic event class (Event vs Hackathon) will be instantiated.</p>
+
+      <form id="createEventForm">
+        <div class="form-row">
+          <div class="form-group flex-2">
+            <label>Event Title *</label>
+            <input type="text" id="eventInputTitle" required placeholder="e.g. HackSpectra 2026: 24-Hour AI Hackathon">
+          </div>
+          <div class="form-group flex-1">
+            <label>Category *</label>
+            <select id="eventInputCategory" required>
+              <option value="Workshop">Workshop</option>
+              <option value="Hackathon">Hackathon (Special Subclass)</option>
+              <option value="Competition">Competition</option>
+              <option value="Technical">Technical</option>
+              <option value="Cultural">Cultural</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Event Description *</label>
+          <textarea id="eventInputDesc" rows="3" required placeholder="Describe objectives, eligibility, and agenda..."></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Date *</label>
+            <input type="date" id="eventInputDate" required>
+          </div>
+          <div class="form-group">
+            <label>Time *</label>
+            <input type="text" id="eventInputTime" placeholder="e.g. 10:00 AM" required>
+          </div>
+          <div class="form-group">
+            <label>Venue *</label>
+            <input type="text" id="eventInputVenue" placeholder="e.g. Central Computing Facility" required>
+          </div>
+          <div class="form-group">
+            <label>Capacity *</label>
+            <input type="number" id="eventInputCapacity" value="60" min="5" max="500" required>
+          </div>
+        </div>
+
+        <!-- Conditional Hackathon Fields -->
+        <div id="hackathonFormFields" class="hackathon-fields-box hidden">
+          <h4>⚡ Hackathon Inheritance Attributes</h4>
+          <div class="form-row">
+            <div class="form-group flex-2">
+              <label>Hackathon Theme</label>
+              <input type="text" id="eventInputTheme" placeholder="e.g. Autonomous AI Agents & Web3">
+            </div>
+            <div class="form-group flex-1">
+              <label>Duration</label>
+              <input type="text" id="eventInputDuration" placeholder="e.g. 24 Hours">
+            </div>
+            <div class="form-group flex-1">
+              <label>Team Size</label>
+              <input type="number" id="eventInputTeamSize" value="4" min="1" max="8">
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" id="cancelCreateEventBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Publish to Event Spectra</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Certificate Viewer & Downloader -->
+  <div class="modal-overlay hidden" id="certModal">
+    <div class="modal-card modal-large cert-viewer-modal">
+      <button class="modal-close" id="closeCertModal">&times;</button>
+      
+      <!-- Visual Certificate Preview -->
+      <div class="certificate-canvas-wrapper" id="printableCert">
+        <div class="cert-border-outer">
+          <div class="cert-border-inner">
+            <div class="cert-header">
+              <div class="cert-institution">FEDERAL INSTITUTE OF SCIENCE AND TECHNOLOGY (FISAT)®</div>
+              <div class="cert-subinst">Mookkannoor P.O., Angamaly, Ernakulam, Kerala - 683577</div>
+              <div class="cert-badge">EVENT SPECTRA ACCREDITATION</div>
+            </div>
+
+            <div class="cert-body">
+              <div class="cert-title-type" id="certRenderType">CERTIFICATE OF PARTICIPATION</div>
+              <p class="cert-text-intro">This is proudly presented to</p>
+              <div class="cert-recipient-name" id="certRenderRecipient">Joseph P Subash</div>
+              <p class="cert-text-body">
+                of <span id="certRenderDept">B.Tech Computer Science & Engineering</span> for outstanding and successful participation in 
+                <strong id="certRenderEvent">TechFest Keynote & Campus Project Expo</strong>
+                conducted at FISAT campus.
+              </p>
+            </div>
+
+            <div class="cert-footer">
+              <div class="cert-sign-col">
+                <div class="cert-signature-line">Dr. Mini P R</div>
+                <div class="cert-sign-role">Principal / Dean Academics</div>
+              </div>
+              <div class="cert-seal">
+                <div class="seal-inner">FISAT<br>OFFICIAL<br>★ SEAL ★</div>
+              </div>
+              <div class="cert-sign-col">
+                <div class="cert-signature-line" id="certRenderDate">2026-10-30</div>
+                <div class="cert-sign-role">Issue Date • FISAT Events</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions" style="margin-top: 1.5rem;">
+        <button id="downloadCertBtn" class="btn btn-primary">📥 Download Official Certificate (PNG / Print)</button>
+        <button id="simulateEmailCertBtn" class="btn btn-outline">✉️ Send Copy to Student Email</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Set Reminder -->
+  <div class="modal-overlay hidden" id="reminderModal">
+    <div class="modal-card">
+      <button class="modal-close" id="closeReminderModal">&times;</button>
+      <h2 class="modal-title">⏰ Set Event Reminder</h2>
+      <p class="modal-desc" id="reminderEventDesc">Schedule a notification alert for this event.</p>
+
+      <form id="reminderForm">
+        <input type="hidden" id="reminderEventId">
+        <div class="form-group">
+          <label>Reminder Alert Time *</label>
+          <input type="text" id="reminderTimeInput" placeholder="e.g. 1 hour before / 08:30 AM" required>
+        </div>
+        <div class="form-group">
+          <label>Reminder Note / Message</label>
+          <input type="text" id="reminderNoteInput" placeholder="e.g. Bring laptop, college ID card, resume">
+        </div>
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-primary">Schedule Reminder</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Project Team (Page 2 of PDF) -->
+  <div class="modal-overlay hidden" id="teamModal">
+    <div class="modal-card modal-large">
+      <button class="modal-close" id="closeTeamModal">&times;</button>
+      <div class="modal-badge-row">
+        <span class="role-tag">FISAT OOPS Course Project</span>
+      </div>
+      <h2 class="modal-title">EVENT SPECTRA - Project Team</h2>
+      <p class="modal-desc">Department of Computer Science & Engineering, Federal Institute of Science and Technology (FISAT)</p>
+
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-avatar">46</div>
+          <div class="team-details">
+            <h4>Joanna Jomon</h4>
+            <div class="team-roll">Roll No: 46</div>
+            <div class="team-module">UI/UX & Registration Module</div>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">47</div>
+          <div class="team-details">
+            <h4>Joel Shantu</h4>
+            <div class="team-roll">Roll No: 47</div>
+            <div class="team-module">Notification & Reminder Module</div>
+          </div>
+        </div>
+        <div class="team-card highlight-card">
+          <div class="team-avatar">48</div>
+          <div class="team-details">
+            <h4>Joseph P Subash</h4>
+            <div class="team-roll">Roll No: 48 (Lead Developer)</div>
+            <div class="team-module">Backend Architecture & Java OOP Modeling</div>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">49</div>
+          <div class="team-details">
+            <h4>Joshua Jomesh</h4>
+            <div class="team-roll">Roll No: 49</div>
+            <div class="team-module">Certificate Management & Verification</div>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">50</div>
+          <div class="team-details">
+            <h4>Jovial J Thattil</h4>
+            <div class="team-roll">Roll No: 50</div>
+            <div class="team-module">Event & Club Management Module</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-summary-box">
+        <h4>Project Objectives (From Presentation)</h4>
+        <ul>
+          <li><strong>Centralized Platform:</strong> Solves WhatsApp/scattered notice spam by providing a single source of truth for FISAT events.</li>
+          <li><strong>Streamlined Bookings:</strong> Students register with 1 click; coordinators manage real-time participant capacity.</li>
+          <li><strong>Digital Certificate Hub:</strong> Auto-generated accredited e-certificates available for instant download and verification.</li>
+          <li><strong>Pure Java OOP Core:</strong> Built using fundamental Java classes, inheritance, polymorphism, and encapsulation.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: OOP Architecture & Class Diagram (Page 7 of PDF) -->
+  <div class="modal-overlay hidden" id="oopDocModal">
+    <div class="modal-card modal-large">
+      <button class="modal-close" id="closeOopDocModal">&times;</button>
+      <div class="modal-badge-row">
+        <span class="role-tag">Core Java Object-Oriented Principles</span>
+      </div>
+      <h2 class="modal-title">Java OOP Architecture & Class Diagram Mapping</h2>
+      <p class="modal-desc">Direct implementation of the UML diagram from Slide 7 using standard Java (JDK).</p>
+
+      <div class="oop-concepts-grid">
+        <div class="concept-card">
+          <h4>1. Abstraction</h4>
+          <p><code>abstract class User</code> defines common authentication, profile update, and abstract method <code>getRoleDescription()</code>.</p>
+        </div>
+        <div class="concept-card">
+          <h4>2. Inheritance</h4>
+          <p><code>Student extends User</code>, <code>ClubOrganizer extends User</code>, and <code>Hackathon extends Event</code> reuse and extend base functionality.</p>
+        </div>
+        <div class="concept-card">
+          <h4>3. Polymorphism</h4>
+          <p>Method overriding in <code>Hackathon.getDetails()</code> dynamically specializes event information at runtime when invoked through an <code>Event</code> reference.</p>
+        </div>
+        <div class="concept-card">
+          <h4>4. Encapsulation</h4>
+          <p>All model variables (<code>userId</code>, <code>eventId</code>, <code>capacity</code>, etc.) are strictly <code>private</code> with robust accessors/mutators.</p>
+        </div>
+      </div>
+
+      <div class="uml-table-wrapper">
+        <h4>UML Class Diagram Reference (Page 7)</h4>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Class Name</th>
+              <th>Inheritance / Role</th>
+              <th>Key Attributes</th>
+              <th>Key Methods</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>User</code></td>
+              <td>Abstract Base Class</td>
+              <td>userId, name, email, password, phone</td>
+              <td>login(), logout(), updateProfile()</td>
+            </tr>
+            <tr>
+              <td><code>Student</code></td>
+              <td>extends User</td>
+              <td>studentId, course, semester</td>
+              <td>registerForEvent(), bookEvent(), viewEvents(), viewCertificates()</td>
+            </tr>
+            <tr>
+              <td><code>ClubOrganizer</code></td>
+              <td>extends User</td>
+              <td>organizerId, clubName, clubDescription</td>
+              <td>createEvent(), updateEvent(), deleteEvent(), manageEvent()</td>
+            </tr>
+            <tr>
+              <td><code>Event</code></td>
+              <td>Base Event Class</td>
+              <td>eventId, title, description, date, time, venue, category, capacity</td>
+              <td>create(), update(), cancel(), getDetails()</td>
+            </tr>
+            <tr>
+              <td><code>Hackathon</code></td>
+              <td>extends Event</td>
+              <td>theme, duration, teamSize</td>
+              <td>create(), update(), getDetails() (Overridden)</td>
+            </tr>
+            <tr>
+              <td><code>Registration</code></td>
+              <td>Association (Student ↔ Event)</td>
+              <td>registrationId, registrationDate, status</td>
+              <td>register(), cancelRegistration(), confirmBooking()</td>
+            </tr>
+            <tr>
+              <td><code>Certificate</code></td>
+              <td>Generates from Registration</td>
+              <td>certificateId, issueDate, certificateUrl, certificateType</td>
+              <td>generate(), sendEmail(), download()</td>
+            </tr>
+            <tr>
+              <td><code>Notification</code></td>
+              <td>System Messaging</td>
+              <td>notificationId, message, dateTime, isRead</td>
+              <td>send(), markAsRead()</td>
+            </tr>
+            <tr>
+              <td><code>Reminder</code></td>
+              <td>Student Scheduling</td>
+              <td>reminderId, reminderTime, message</td>
+              <td>setReminder(), cancelReminder(), trigger()</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-left">
+        <strong>EVENT SPECTRA</strong> — Centralized Event Management Platform
+        <div class="footer-sub">Federal Institute of Science and Technology (FISAT) • Department of Computer Science & Engineering</div>
+      </div>
+      <div class="footer-right">
+        <span>Team: Joanna, Joel, Joseph, Joshua, Jovial</span>
+        <span class="footer-badge">Java OOP Project</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
 </body>
 </html>
