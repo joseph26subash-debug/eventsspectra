@@ -159,6 +159,43 @@ const AppState = {
   activeCertificate: null
 };
 
+// LocalStorage Helper for Cloud / Vercel deployment
+function saveToLocalStorage() {
+  if (AppState.isBackendConnected) return;
+  try {
+    const data = {
+      users: AppState.users,
+      events: AppState.events,
+      registrations: AppState.registrations,
+      certificates: AppState.certificates,
+      notifications: AppState.notifications,
+      reminders: AppState.reminders
+    };
+    localStorage.setItem("event_spectra_data", JSON.stringify(data));
+  } catch (e) {
+    console.warn("Storage save error:", e);
+  }
+}
+
+function loadFromLocalStorage() {
+  try {
+    const saved = localStorage.getItem("event_spectra_data");
+    if (saved) {
+      const data = JSON.parse(saved);
+      if (Array.isArray(data.users) && data.users.length) AppState.users = data.users;
+      if (Array.isArray(data.events) && data.events.length) AppState.events = data.events;
+      if (Array.isArray(data.registrations)) AppState.registrations = data.registrations;
+      if (Array.isArray(data.certificates)) AppState.certificates = data.certificates;
+      if (Array.isArray(data.notifications)) AppState.notifications = data.notifications;
+      if (Array.isArray(data.reminders)) AppState.reminders = data.reminders;
+      return true;
+    }
+  } catch (e) {
+    console.warn("Storage load error:", e);
+  }
+  return false;
+}
+
 // DOM Initialization
 document.addEventListener("DOMContentLoaded", () => {
   initApp();
@@ -181,8 +218,21 @@ async function initApp() {
  */
 async function checkBackendConnection() {
   const statusEl = document.getElementById("backendStatus");
+  const isCloudHost = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+
+  if (isCloudHost) {
+    AppState.isBackendConnected = false;
+    loadFromLocalStorage();
+    saveToLocalStorage();
+    if (statusEl) {
+      statusEl.innerHTML = `<strong>Event Spectra Cloud:</strong> Java OOP Models Active`;
+      statusEl.parentElement.querySelector(".indicator-dot").style.backgroundColor = "var(--accent-green)";
+    }
+    return;
+  }
+
   try {
-    const res = await fetch(`${AppState.backendUrl}/api/events`, { signal: AbortSignal.timeout(2000) });
+    const res = await fetch(`${AppState.backendUrl}/api/events`, { signal: AbortSignal.timeout(1500) });
     if (res.ok) {
       AppState.isBackendConnected = true;
       const eventsData = await res.json();
@@ -202,6 +252,8 @@ async function checkBackendConnection() {
   } catch (err) {
     // Backend offline; use embedded state
     AppState.isBackendConnected = false;
+    loadFromLocalStorage();
+    saveToLocalStorage();
     if (statusEl) {
       statusEl.innerHTML = `Running Local OOP Simulation (Java Server ready to run)`;
       statusEl.parentElement.querySelector(".indicator-dot").style.backgroundColor = "var(--accent-gold)";
@@ -622,6 +674,7 @@ async function handleRegisterEvent(eventId) {
     });
 
     showToast(`Registered for ${ev.title}!`, "success");
+    saveToLocalStorage();
     renderApp();
   }
 }
@@ -655,6 +708,7 @@ async function handleCancelRegistration(eventId) {
     const ev = AppState.events.find(e => e.eventId === eventId);
     if (ev && ev.registeredCount > 0) ev.registeredCount--;
     showToast("Registration cancelled.", "info");
+    saveToLocalStorage();
     renderApp();
   }
 }
@@ -878,6 +932,7 @@ async function markNotificationRead(notifId) {
 
   const found = AppState.notifications.find(n => n.notificationId === notifId);
   if (found) found.isRead = true;
+  saveToLocalStorage();
   renderApp();
 }
 
@@ -887,12 +942,14 @@ function markAllNotificationsRead() {
     if (n.userId === uId || n.userId === 0) n.isRead = true;
   });
   showToast("All notifications marked as read.", "info");
+  saveToLocalStorage();
   renderApp();
 }
 
 function deleteReminder(remId) {
   AppState.reminders = AppState.reminders.filter(r => r.reminderId !== remId);
   showToast("Reminder dismissed.", "info");
+  saveToLocalStorage();
   renderApp();
 }
 
@@ -1026,6 +1083,7 @@ async function issueCertificateForStudent(studentId, eventId) {
   });
 
   showToast("Certificate generated and sent!", "success");
+  saveToLocalStorage();
   renderApp();
 }
 
@@ -1053,6 +1111,7 @@ async function deleteEventById(eventId) {
   if (ev) {
     ev.status = "Cancelled";
     showToast("Event cancelled.", "info");
+    saveToLocalStorage();
     renderApp();
   }
 }
@@ -1169,6 +1228,7 @@ function setupModals() {
         isRead: false
       });
       showToast("Campus broadcast alert sent to all students!", "success");
+      saveToLocalStorage();
       renderApp();
     }
   });
@@ -1318,6 +1378,7 @@ function setupFormHandlers() {
       document.getElementById("createEventModal").classList.add("hidden");
       createForm.reset();
       showToast("Event published successfully!", "success");
+      saveToLocalStorage();
       renderApp();
     });
   }
@@ -1368,6 +1429,7 @@ function setupFormHandlers() {
 
       document.getElementById("reminderModal").classList.add("hidden");
       showToast("Reminder scheduled!", "success");
+      saveToLocalStorage();
       renderApp();
     });
   }

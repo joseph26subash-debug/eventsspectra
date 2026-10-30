@@ -54,7 +54,49 @@ function setupTabs() {
   });
 }
 
+function saveAdminToLocalStorage() {
+  try {
+    const data = {
+      users: AdminApp.users,
+      events: AdminApp.events,
+      registrations: AdminApp.registrations,
+      certificates: AdminApp.certificates,
+      notifications: AdminApp.notifications
+    };
+    localStorage.setItem("event_spectra_data", JSON.stringify(data));
+  } catch (e) {
+    console.warn("Storage save error:", e);
+  }
+}
+
+function loadAdminFromLocalStorage() {
+  try {
+    const saved = localStorage.getItem("event_spectra_data");
+    if (saved) {
+      const data = JSON.parse(saved);
+      if (Array.isArray(data.users) && data.users.length) AdminApp.users = data.users;
+      if (Array.isArray(data.events) && data.events.length) AdminApp.events = data.events;
+      if (Array.isArray(data.registrations)) AdminApp.registrations = data.registrations;
+      if (Array.isArray(data.certificates)) AdminApp.certificates = data.certificates;
+      if (Array.isArray(data.notifications)) AdminApp.notifications = data.notifications;
+      return true;
+    }
+  } catch (e) {
+    console.warn("Storage load error:", e);
+  }
+  return false;
+}
+
 async function loadAdminData() {
+  const isCloudHost = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+  if (isCloudHost) {
+    if (!loadAdminFromLocalStorage()) {
+      initDefaultAdminMock();
+      saveAdminToLocalStorage();
+    }
+    return;
+  }
+
   try {
     const [uRes, eRes, rRes, cRes, nRes] = await Promise.all([
       fetch(`${AdminApp.backendUrl}/api/users`).then(r => r.json()),
@@ -70,36 +112,42 @@ async function loadAdminData() {
     AdminApp.notifications = nRes;
   } catch (err) {
     console.warn("Could not load from backend, using default mock:", err);
-    // Fallback data if viewing file directly
-    AdminApp.users = [
-      { userId: 48, name: "Joseph P Subash", email: "joseph.subash@fisat.ac.in", role: "STUDENT", studentId: 48, course: "B.Tech CSE", semester: 4, phone: "+91 98471 23456" },
-      { userId: 46, name: "Joanna Jomon", email: "joanna.jomon@fisat.ac.in", role: "STUDENT", studentId: 46, course: "B.Tech CSE", semester: 4, phone: "+91 94471 67890" },
-      { userId: 47, name: "Joel Shantu", email: "joel.shantu@fisat.ac.in", role: "STUDENT", studentId: 47, course: "B.Tech CSE", semester: 4, phone: "+91 94951 12345" },
-      { userId: 49, name: "Joshua Jomesh", email: "joshua.jomesh@fisat.ac.in", role: "STUDENT", studentId: 49, course: "B.Tech CSE", semester: 4, phone: "+91 97451 98765" },
-      { userId: 50, name: "Jovial J Thattil", email: "jovial.thattil@fisat.ac.in", role: "STUDENT", studentId: 50, course: "B.Tech CSE", semester: 4, phone: "+91 96331 54321" },
-      { userId: 101, name: "ACM FISAT Student Chapter", email: "acm@fisat.ac.in", role: "COORDINATOR", organizerId: 201, clubName: "FISAT ACM Chapter", clubDescription: "Computing society chapter fostering computer science innovation." },
-      { userId: 102, name: "IEEE SB FISAT", email: "ieee@fisat.ac.in", role: "COORDINATOR", organizerId: 202, clubName: "IEEE SB FISAT", clubDescription: "Advancing technology for humanity through technical workshops and hackathons." },
-      { userId: 103, name: "FOSS Cell FISAT", email: "foss@fisat.ac.in", role: "COORDINATOR", organizerId: 203, clubName: "FOSS Cell FISAT", clubDescription: "Promoting open-source culture and Linux." },
-      { userId: 104, name: "CSI FISAT Chapter", email: "csi@fisat.ac.in", role: "COORDINATOR", organizerId: 204, clubName: "CSI FISAT Chapter", clubDescription: "National IT professionals body encouraging research." },
-      { userId: 1, name: "FISAT Events Administrator", email: "admin@fisat.ac.in", role: "ADMIN", department: "Dean of Academics" }
-    ];
-    AdminApp.events = [
-      { eventId: 101, title: "HackSpectra 2026: 24-Hour AI & Web3 Hackathon", organizerClub: "FISAT ACM Chapter", category: "Hackathon", date: "2026-11-14", time: "09:00 AM", venue: "CCF", capacity: 120, registeredCount: 45, status: "Upcoming" },
-      { eventId: 102, title: "Workshop on Deep Learning & LLMs with PyTorch", organizerClub: "IEEE SB FISAT", category: "Workshop", date: "2026-11-05", time: "10:00 AM", venue: "Auditorium 2", capacity: 80, registeredCount: 68, status: "Upcoming" },
-      { eventId: 103, title: "TechFest Inaugural Keynote & Campus Project Expo", organizerClub: "FISAT ACM Chapter", category: "Technical", date: "Today", time: "02:00 PM", venue: "Main Auditorium", capacity: 250, registeredCount: 190, status: "Today" }
-    ];
-    AdminApp.registrations = [
-      { registrationId: 501, studentId: 48, eventId: 101, registrationDate: "2026-10-25 14:30", status: "Confirmed" },
-      { registrationId: 502, studentId: 48, eventId: 102, registrationDate: "2026-10-26 10:15", status: "Confirmed" },
-      { registrationId: 503, studentId: 46, eventId: 101, registrationDate: "2026-10-26 11:00", status: "Confirmed" }
-    ];
-    AdminApp.certificates = [
-      { certificateId: 801, studentId: 48, eventId: 103, studentName: "Joseph P Subash", eventTitle: "TechFest Keynote", issueDate: "2026-10-30", certificateType: "Participation" }
-    ];
-    AdminApp.notifications = [
-      { notificationId: 301, userId: 0, message: "Welcome to Event Spectra Centralized Platform", dateTime: "2026-10-28 09:00" }
-    ];
+    if (!loadAdminFromLocalStorage()) {
+      initDefaultAdminMock();
+      saveAdminToLocalStorage();
+    }
   }
+}
+
+function initDefaultAdminMock() {
+  AdminApp.users = [
+    { userId: 48, name: "Joseph P Subash", email: "joseph.subash@fisat.ac.in", role: "STUDENT", studentId: 48, course: "B.Tech CSE", semester: 4, phone: "+91 98471 23456" },
+    { userId: 46, name: "Joanna Jomon", email: "joanna.jomon@fisat.ac.in", role: "STUDENT", studentId: 46, course: "B.Tech CSE", semester: 4, phone: "+91 94471 67890" },
+    { userId: 47, name: "Joel Shantu", email: "joel.shantu@fisat.ac.in", role: "STUDENT", studentId: 47, course: "B.Tech CSE", semester: 4, phone: "+91 94951 12345" },
+    { userId: 49, name: "Joshua Jomesh", email: "joshua.jomesh@fisat.ac.in", role: "STUDENT", studentId: 49, course: "B.Tech CSE", semester: 4, phone: "+91 97451 98765" },
+    { userId: 50, name: "Jovial J Thattil", email: "jovial.thattil@fisat.ac.in", role: "STUDENT", studentId: 50, course: "B.Tech CSE", semester: 4, phone: "+91 96331 54321" },
+    { userId: 101, name: "ACM FISAT Student Chapter", email: "acm@fisat.ac.in", role: "COORDINATOR", organizerId: 201, clubName: "FISAT ACM Chapter", clubDescription: "Computing society chapter fostering computer science innovation." },
+    { userId: 102, name: "IEEE SB FISAT", email: "ieee@fisat.ac.in", role: "COORDINATOR", organizerId: 202, clubName: "IEEE SB FISAT", clubDescription: "Advancing technology for humanity through technical workshops and hackathons." },
+    { userId: 103, name: "FOSS Cell FISAT", email: "foss@fisat.ac.in", role: "COORDINATOR", organizerId: 203, clubName: "FOSS Cell FISAT", clubDescription: "Promoting open-source culture and Linux." },
+    { userId: 104, name: "CSI FISAT Chapter", email: "csi@fisat.ac.in", role: "COORDINATOR", organizerId: 204, clubName: "CSI FISAT Chapter", clubDescription: "National IT professionals body encouraging research." },
+    { userId: 1, name: "FISAT Events Administrator", email: "admin@fisat.ac.in", role: "ADMIN", department: "Dean of Academics" }
+  ];
+  AdminApp.events = [
+    { eventId: 101, title: "HackSpectra 2026: 24-Hour AI & Web3 Hackathon", organizerClub: "FISAT ACM Chapter", category: "Hackathon", date: "2026-11-14", time: "09:00 AM", venue: "CCF", capacity: 120, registeredCount: 45, status: "Upcoming" },
+    { eventId: 102, title: "Workshop on Deep Learning & LLMs with PyTorch", organizerClub: "IEEE SB FISAT", category: "Workshop", date: "2026-11-05", time: "10:00 AM", venue: "Auditorium 2", capacity: 80, registeredCount: 68, status: "Upcoming" },
+    { eventId: 103, title: "TechFest Inaugural Keynote & Campus Project Expo", organizerClub: "FISAT ACM Chapter", category: "Technical", date: "Today", time: "02:00 PM", venue: "Main Auditorium", capacity: 250, registeredCount: 190, status: "Today" }
+  ];
+  AdminApp.registrations = [
+    { registrationId: 501, studentId: 48, eventId: 101, registrationDate: "2026-10-25 14:30", status: "Confirmed" },
+    { registrationId: 502, studentId: 48, eventId: 102, registrationDate: "2026-10-26 10:15", status: "Confirmed" },
+    { registrationId: 503, studentId: 46, eventId: 101, registrationDate: "2026-10-26 11:00", status: "Confirmed" }
+  ];
+  AdminApp.certificates = [
+    { certificateId: 801, studentId: 48, eventId: 103, studentName: "Joseph P Subash", eventTitle: "TechFest Keynote", issueDate: "2026-10-30", certificateType: "Participation" }
+  ];
+  AdminApp.notifications = [
+    { notificationId: 301, userId: 0, message: "Welcome to Event Spectra Centralized Platform", dateTime: "2026-10-28 09:00" }
+  ];
 }
 
 function renderAll() {
@@ -262,6 +310,7 @@ async function adminCancelEvent(eventId) {
   if (found) {
     found.status = "Cancelled";
     showToast("Event cancelled by Administrator.", "info");
+    saveAdminToLocalStorage();
     renderAll();
   }
 }
@@ -306,6 +355,7 @@ function setupBroadcastForm() {
     });
     showToast("Official campus announcement broadcasted to all students!", "success");
     form.reset();
+    saveAdminToLocalStorage();
     renderAll();
   });
 }
@@ -341,6 +391,7 @@ function setupModals() {
     addModal.classList.add("hidden");
     document.getElementById("addStudentForm").reset();
     showToast(`Student ${name} (Roll ${roll}) enrolled successfully!`, "success");
+    saveAdminToLocalStorage();
     renderAll();
   });
 }
